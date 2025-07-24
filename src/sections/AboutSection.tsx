@@ -1,27 +1,29 @@
 import cn from "../utils/cn"
 import {FaGithub, FaLinkedin} from "react-icons/fa"
-
-export default function AboutSection() {
+type AboutSectionProps = {
+    id: string
+}
+export default function AboutSection(props: AboutSectionProps) {
 
     const goTo = (path: string) => {
         window.open(path, "_blank", "noopener,noreferrer")
     }
 
     return (
-        <section className={cn(
+        <section id= {props.id} className={cn(
             "font-roboto-condensed",
-            "h-[calc(100vh-4rem)]",
-            "flex flex-col p-6"
+            "h-screen",
+            "flex flex-col"
         )}>
             <div className={cn(
-                "h-full w-full bg-sky-950 text-xl rounded-md p-6",
+                "h-full w-full bg-sky-950 text-xl",
                 "flex flex-col justify-center items-center"
             )}>
                 <p className={cn(
                     "font-roboto-condensed",
                     "text-white text-center mb-4"
                 )}>
-                    Hello,
+                    Hello, {props.id}
                 </p>
                 <div className={cn(
                     "flex flex-row"
