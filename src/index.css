@@ -1,3 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+.font-roboto-condensed {
+    font-family: "Roboto Condensed", sans-serif;
+}
+#root{
+    margin: 0;
+    box-sizing: border-box;
+
+}
