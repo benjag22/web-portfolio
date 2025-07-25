@@ -1,0 +1,42 @@
+.borderContainer {
+    position: relative;
+}
+
+.animatedBorder {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 0 0 0 round 12px);
+    border-radius: 12px;
+    background: #0891b2;
+    z-index: -1;
+    border: 0;
+    container-type: inline-size;
+}
+
+.borderTrail {
+    width: 25cqmin;
+    aspect-ratio: 2 / 1;
+    position: absolute;
+    background: radial-gradient(
+            100% 100% at right,
+            #06b6d4,
+            transparent 50%
+    );
+    offset-path: border-box;
+    offset-anchor: 100% 50%;
+    animation: borderJourney 6s infinite linear;
+}
+
+@keyframes borderJourney {
+    to {
+        offset-distance: 100%;
+    }
+}
+
+.contentWithBorder {
+    background: linear-gradient(rgb(1, 6, 33), rgb(2, 10, 56)) padding-box, transparent;
+    border: 3px solid transparent;
+    border-radius: 12px;
+    position: relative;
+    z-index: 1;
+}
