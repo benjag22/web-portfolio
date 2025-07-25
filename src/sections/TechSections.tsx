@@ -10,7 +10,7 @@ export default function TechSection(props: TechSectionProps) {
             "flex flex-col my-6"
         )}>
             <div className={cn(
-                "h-full w-full bg-sky-950 text-xl",
+                "h-full w-full bg-[#010621] text-xl",
                 "flex flex-col justify-center items-center"
             )}>
                 <p className={cn(

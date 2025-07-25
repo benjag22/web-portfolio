@@ -11,7 +11,7 @@ export default function WorkSection(props: WorkSectionProps) {
             "flex flex-col"
         )}>
             <div className={cn(
-                "h-full w-full bg-sky-950 text-xl",
+                "h-full w-full bg-[#010621] text-xl",
                 "flex flex-col justify-center items-center"
             )}>
                 <p className={cn(
