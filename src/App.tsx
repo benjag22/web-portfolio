@@ -3,8 +3,6 @@ import TechSection from "./sections/TechSections.tsx"
 import WorkSection from "./sections/WorkSection.tsx";
 import NavBar from "./components/NavBar.tsx";
 
-import './App.css'
-
 function App() {
     const sectionsIds = {
         aboutSection: "about",
