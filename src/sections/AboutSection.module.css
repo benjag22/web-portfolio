@@ -1,42 +1,137 @@
 .borderContainer {
     position: relative;
-}
-
-.animatedBorder {
-    position: absolute;
-    inset: 0;
-    clip-path: inset(0 0 0 0 round 12px);
-    border-radius: 12px;
-    background: #0891b2;
-    z-index: -1;
-    border: 0;
-    container-type: inline-size;
+    height: 100%;
 }
 
 .borderTrail {
-    width: 25cqmin;
-    aspect-ratio: 2 / 1;
+    width: 30px;
+    height: 15px;
     position: absolute;
     background: radial-gradient(
-            100% 100% at right,
-            #06b6d4,
-            transparent 50%
+            ellipse 100% 100% at center,
+            #22d3ee,
+            #06b6d4 40%,
+            transparent 70%
     );
-    offset-path: border-box;
-    offset-anchor: 100% 50%;
-    animation: borderJourney 6s infinite linear;
+    border-radius: 50%;
+    filter: blur(1px);
+    box-shadow: 0 0 10px #22d3ee, 0 0 20px #06b6d4;
+    animation: borderJourney 4s infinite linear;
 }
 
 @keyframes borderJourney {
-    to {
-        offset-distance: 100%;
+    0% {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+    12.5% {
+        top: 0;
+        left: 25%;
+        transform: translate(-50%, -50%);
+    }
+    25% {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    37.5% {
+        top: 0;
+        left: 75%;
+        transform: translate(-50%, -50%);
+    }
+    50% {
+        top: 0;
+        left: 100%;
+        transform: translate(-50%, -50%);
+    }
+    62.5% {
+        top: 50%;
+        left: 100%;
+        transform: translate(-50%, -50%);
+    }
+    75% {
+        top: 100%;
+        left: 100%;
+        transform: translate(-50%, -50%);
+    }
+    87.5% {
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        top: 100%;
+        left: 0;
+        transform: translate(-50%, -50%);
     }
 }
 
 .contentWithBorder {
-    background: linear-gradient(rgb(1, 6, 33), rgb(2, 10, 56)) padding-box, transparent;
-    border: 3px solid transparent;
+    background: linear-gradient(135deg,
+    rgba(1, 6, 33, 0.95) 0%,
+    rgba(2, 10, 56, 0.95) 50%,
+    rgba(1, 6, 33, 0.95) 100%
+    ) padding-box, transparent;
+    border: 2px solid rgba(6, 182, 212, 0.3);
     border-radius: 12px;
     position: relative;
     z-index: 1;
+    backdrop-filter: blur(10px);
+}
+
+.borderContainer:hover .contentWithBorder {
+    border-color: rgba(6, 182, 212, 0.6);
+    background: linear-gradient(135deg,
+    rgba(1, 6, 33, 0.98) 0%,
+    rgba(2, 10, 56, 0.98) 50%,
+    rgba(1, 6, 33, 0.98) 100%
+    );
+}
+
+.borderTrailSmooth {
+    width: 25px;
+    height: 12px;
+    position: absolute;
+    background: radial-gradient(
+            ellipse 100% 100% at center,
+            #22d3ee,
+            #06b6d4 50%,
+            transparent 80%
+    );
+    border-radius: 50%;
+    filter: blur(0.5px);
+    box-shadow:
+            0 0 8px #22d3ee,
+            0 0 15px #06b6d4,
+            0 0 25px rgba(34, 211, 238, 0.3);
+    animation: smoothBorderJourney 6s infinite linear;
+}
+
+@keyframes smoothBorderJourney {
+    0% {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+    25% {
+        top: 0;
+        left: 100%;
+        transform: translate(-50%, -50%);
+    }
+    50% {
+        top: 100%;
+        left: 100%;
+        transform: translate(-50%, -50%);
+    }
+    75% {
+        top: 100%;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -50%);
+    }
 }
