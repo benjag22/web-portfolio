@@ -23,7 +23,7 @@ export default function AboutSection(props: AboutSectionProps) {
                 "h-full w-full bg-[#010621]",
                 "grid [grid-template-rows:30%_50%_20%] gap-2"
             )}>
-                <div className={cn("flex w-full items-start justify-start p-8")}>
+                <div className={cn("flex w-full items-start justify-start px-8 pt-8")}>
                     <h1 className={cn(
                         "font-roboto-condensed",
                         "italic text-5xl text-white p-6",
@@ -33,26 +33,37 @@ export default function AboutSection(props: AboutSectionProps) {
                     </h1>
                 </div>
                 <div className={cn(
-                    "grid grid-cols-2 gap-2 px-8 pb-8"
+                    "grid grid-cols-2 gap-x-8 px-8 pb-8"
                 )}>
-                    <div className={styles.borderContainer}>
-                        <div className={styles.animatedBorder}>
-                            <div className={styles.borderTrail}></div>
+                    <div className={cn(
+                        styles.borderContainer,
+                        "group cursor-pointer"
+                    )}>
+                        <div className={cn(
+                            styles.animatedBorder,
+                            "opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        )}>
+                            <div className={styles.borderTrailSmooth}></div>
                         </div>
 
                         <div className={cn(
                             styles.contentWithBorder,
-                            "text-xl"
+                            "text-lg",
+                            "p-8",
+                            "h-full",
+                            "flex flex-col justify-center gap-6",
+                            "group-hover:shadow-lg group-hover:shadow-cyan-500/20",
+                            "transition-all duration-300"
                         )}>
                             <p className={cn(
                                 "font-roboto-condensed",
-                                "text-white text-center py-8"
+                                "text-white text-center leading-relaxed"
                             )}>
                                 {metadata.aboutMeParagraph1}
                             </p>
                             <p className={cn(
                                 "font-roboto-condensed",
-                                "text-white text-center py-8"
+                                "text-white text-center leading-relaxed"
                             )}>
                                 {metadata.aboutMeParagraph2}
                             </p>
@@ -60,25 +71,62 @@ export default function AboutSection(props: AboutSectionProps) {
                     </div>
 
                     <div className={cn(
-                        "flex items-center justify-center"
+                        "flex items-center justify-center",
+                        "bg-gradient-to-br from-[#020A38] to-[#010621]",
+                        "rounded-xl border border-cyan-800/30",
+                        "shadow-lg shadow-cyan-900/20"
                     )}>
-                        Aca va la foto.
+                        <div className={cn(
+                            "font-roboto-condensed",
+                            "text-cyan-400 text-2xl ",
+                            "flex flex-col items-center gap-4"
+                        )}>
+                            <span className="text-center">futura foto de perfil</span>
+                        </div>
                     </div>
                 </div>
                 <div className={cn(
-                    "flex flex-row justify-center"
+                    "flex flex-row justify-center items-center gap-8"
                 )}>
-                    <FaGithub onClick={() => goTo("https://github.com/benjag22")} className={cn(
-                        "text-6xl text-white hover:text-gray-300 cursor-pointer transition-colors"
-                    )}/>
-                    <FaLinkedin onClick={() => goTo("https://www.linkedin.com/in/benjags/")} className={cn(
-                        "text-6xl text-white hover:text-gray-300 cursor-pointer transition-colors"
-                    )}/>
-                    <TbFileCv width={200} className={cn(
-                        "text-6xl text-white hover:text-gray-300 cursor-pointer transition-colors"
-                    )}/>
+                    <div className={cn(
+                        "group cursor-pointer p-3 rounded-full",
+                        "hover:bg-cyan-900/20 transition-all duration-300"
+                    )}>
+                        <FaGithub
+                            onClick={() => goTo("https://github.com/benjag22")}
+                            className={cn(
+                                "text-6xl text-white hover:text-cyan-400",
+                                "cursor-pointer transition-colors duration-300",
+                                "group-hover:scale-110 transform"
+                            )}
+                        />
+                    </div>
+                    <div className={cn(
+                        "group cursor-pointer p-3 rounded-full",
+                        "hover:bg-cyan-900/20 transition-all duration-300"
+                    )}>
+                        <FaLinkedin
+                            onClick={() => goTo("https://www.linkedin.com/in/benjags/")}
+                            className={cn(
+                                "text-6xl text-white hover:text-cyan-400",
+                                "cursor-pointer transition-colors duration-300",
+                                "group-hover:scale-110 transform"
+                            )}
+                        />
+                    </div>
+                    <div className={cn(
+                        "group cursor-pointer p-3 rounded-full",
+                        "hover:bg-cyan-900/20 transition-all duration-300"
+                    )}>
+                        <TbFileCv
+                            className={cn(
+                                "text-6xl text-white hover:text-cyan-400",
+                                "cursor-pointer transition-colors duration-300",
+                                "group-hover:scale-110 transform"
+                            )}
+                        />
+                    </div>
                 </div>
-
             </div>
         </section>
     )
