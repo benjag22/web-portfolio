@@ -1,4 +1,5 @@
 import cn from "../utils/cn"
+import StackCard from "../components/StackCard.tsx";
 type TechSectionProps = {
     id: string
 }
@@ -19,6 +20,17 @@ export default function TechSection(props: TechSectionProps) {
                 )}>
                     Hello, {props.id}
                 </p>
+                <div className={cn("flex flex-col w-4/5 h-full")}>
+                    <div className={cn("flex flex-row")}>
+                        <StackCard title={"Frontend"}/>
+                        <StackCard title={"Frontend"}/>
+                    </div>
+                    <div className={cn("flex flex-row")}>
+                        <StackCard title={"Frontend"}/>
+                        <StackCard title={"Frontend"}/>
+                    </div>
+                </div>
+
 
             </div>
         </section>
