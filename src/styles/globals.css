@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-@theme {
-    --font-roboto-condensed: "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
+@theme inline {
+    --font-roboto-condensed: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+}
 
+@theme {
     --color-abyss: #010621;
     --color-deep: #020936;
     --color-navy: #020A38;
@@ -25,7 +27,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-#root {
+#__next {
     margin: 0;
     box-sizing: border-box;
     min-height: 100vh;

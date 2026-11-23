@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import cn from "../utils/cn"
+import cn from "@/utils/cn"
 import {FaGithub, FaLinkedin} from "react-icons/fa"
 import { TbFileCv } from "react-icons/tb";
-import {metadata} from "../metadata.ts"
-import SectionTitle from "../components/SectionTitle.tsx";
-import ProfilePhoto from "../components/ProfilePhoto.tsx";
+import {metadata} from "@/metadata"
+import SectionTitle from "@/components/SectionTitle";
+import ProfilePhoto from "@/components/ProfilePhoto";
 
 import styles from "./AboutSection.module.css"
 

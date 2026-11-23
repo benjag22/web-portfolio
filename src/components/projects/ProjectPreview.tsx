@@ -1,11 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, type Variants } from "motion/react";
 import { TbArrowUpRight, TbBrandGithub, TbChevronLeft, TbChevronRight, TbX } from "react-icons/tb";
-import type { Project } from "../../data/projects";
-import { techIcons } from "../../data/techIcons";
-import usePrefersReducedMotion from "../../hooks/usePrefersReducedMotion";
-import cn from "../../utils/cn";
+import type { Project } from "@/data/projects";
+import { techIcons } from "@/data/techIcons";
+import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
+import cn from "@/utils/cn";
 import type { BubbleOrigin } from "./ProjectBubbles";
 import ProjectVisual from "./ProjectVisual";
 
@@ -81,8 +81,7 @@ export default function ProjectPreview({ projects, index, origin, onNavigate, on
         onNavigate(next);
     };
 
-    const keyHandler = useRef<(e: KeyboardEvent) => void>(() => {});
-    keyHandler.current = (e: KeyboardEvent) => {
+    const handleKey = useEffectEvent((e: KeyboardEvent) => {
         if (e.key === "Escape") {
             e.preventDefault();
             onClose();
@@ -93,10 +92,10 @@ export default function ProjectPreview({ projects, index, origin, onNavigate, on
         } else if (e.key === "Tab") {
             trapFocus(e, dialogRef.current);
         }
-    };
+    });
 
     useEffect(() => {
-        const listener = (e: KeyboardEvent) => keyHandler.current(e);
+        const listener = (e: KeyboardEvent) => handleKey(e);
         document.addEventListener("keydown", listener);
         return () => document.removeEventListener("keydown", listener);
     }, []);

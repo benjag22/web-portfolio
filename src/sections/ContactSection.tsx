@@ -1,9 +1,9 @@
 import {useState} from "react";
 import {FaGithub, FaLinkedin} from "react-icons/fa";
 import {TbCheck, TbCopy, TbFileCv, TbMail} from "react-icons/tb";
-import cn from "../utils/cn";
-import {metadata} from "../metadata.ts";
-import SectionTitle from "../components/SectionTitle.tsx";
+import cn from "@/utils/cn";
+import {metadata} from "@/metadata";
+import SectionTitle from "@/components/SectionTitle";
 
 type ContactSectionProps = {
     id: string;

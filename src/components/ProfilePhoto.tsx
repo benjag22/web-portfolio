@@ -1,5 +1,6 @@
 import { useState } from "react";
-import cn from "../utils/cn";
+import Image from "next/image";
+import cn from "@/utils/cn";
 import bubbleStyles from "./projects/ProjectBubbles.module.css";
 
 type ProfilePhotoProps = {
@@ -16,7 +17,7 @@ export default function ProfilePhoto({ src, alt, initials, className }: ProfileP
         <div className={cn("relative aspect-square w-full max-w-[320px]", className)}>
             <div aria-hidden="true" className="absolute -inset-6 rounded-full bg-cyan-500/10 blur-2xl" />
 
-            <div className={cn(bubbleStyles.glass, "relative h-full w-full overflow-hidden")}>
+            <div className={cn(bubbleStyles.glass, "relative h-full w-full overflow-hidden after:z-10 after:opacity-40")}>
                 {failed ? (
                     <div
                         role="img"
@@ -26,12 +27,21 @@ export default function ProfilePhoto({ src, alt, initials, className }: ProfileP
                         {initials}
                     </div>
                 ) : (
-                    <img
-                        src={src}
-                        alt={alt}
-                        onError={() => setFailed(true)}
-                        className="h-full w-full rounded-full object-cover p-1.5"
-                    />
+                    <>
+                        <Image
+                            src={src}
+                            alt={alt}
+                            fill
+                            preload
+                            sizes="(min-width: 768px) 320px, 80vw"
+                            onError={() => setFailed(true)}
+                            className="rounded-full object-cover p-1.5"
+                        />
+                        <span
+                            aria-hidden="true"
+                            className="absolute inset-1.5 rounded-full bg-[radial-gradient(circle_at_50%_42%,transparent_58%,rgba(2,10,56,0.55)_100%)] shadow-[inset_0_0_24px_rgba(34,211,238,0.25)]"
+                        />
+                    </>
                 )}
             </div>
         </div>

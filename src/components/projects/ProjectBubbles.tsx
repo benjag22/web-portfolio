@@ -17,10 +17,11 @@ import {
     type SimulationLinkDatum,
     type SimulationNodeDatum,
 } from "d3-force";
-import type { Project } from "../../data/projects";
-import { techIcons, type TechName } from "../../data/techIcons";
-import usePrefersReducedMotion from "../../hooks/usePrefersReducedMotion";
-import cn from "../../utils/cn";
+import type { Project } from "@/data/projects";
+import Image from "next/image";
+import { techIcons, type TechName } from "@/data/techIcons";
+import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
+import cn from "@/utils/cn";
 import BubbleField from "./BubbleField";
 import styles from "./ProjectBubbles.module.css";
 
@@ -102,7 +103,8 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
     const [hovered, setHovered] = useState<number | null>(null);
     const [draggingId, setDraggingId] = useState<string | null>(null);
 
-    const scene = useMemo(() => (size ? buildScene(projects, size) : null), [projects, size]);
+    const layout = useMemo(() => (size ? buildScene(projects, size) : null), [projects, size]);
+    const sceneRef = useRef<Scene | null>(null);
     const running = visible && !paused && !reducedMotion;
 
     useEffect(() => {
@@ -135,7 +137,8 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
     }, []);
 
     useLayoutEffect(() => {
-        if (!scene) return;
+        if (!layout) return;
+        const scene = cloneScene(layout);
         const saved = savedPositions.current;
 
         for (const node of scene.nodes) {
@@ -147,11 +150,6 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
                 node.y = (node.y ?? 0) + scene.h * 0.75 + node.projectIndex * 140;
             }
         }
-        renderScene(scene, nodeEls.current, linkEls.current);
-    }, [scene, reducedMotion]);
-
-    useEffect(() => {
-        if (!scene) return;
 
         const wander = !reducedMotion;
         const sim = forceSimulation<BubbleNode, BubbleLink>(scene.nodes)
@@ -184,28 +182,30 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
             .force("bounds", boundsForce(scene))
             .stop();
 
-        simRef.current = sim;
-
         if (reducedMotion) {
             for (const node of scene.nodes) {
                 node.x = node.kind === "project" ? node.ax : node.x;
                 node.y = node.kind === "project" ? node.ay : node.y;
             }
             sim.tick(260);
-            renderScene(scene, nodeEls.current, linkEls.current);
         }
+
+        sceneRef.current = scene;
+        simRef.current = sim;
+        renderScene(scene, nodeEls.current, linkEls.current);
 
         return () => {
             sim.stop();
             simRef.current = null;
+            sceneRef.current = null;
             savedPositions.current = new Map(
                 scene.nodes.map((n) => [n.id, { x: (n.x ?? 0) / scene.w, y: (n.y ?? 0) / scene.h }]),
             );
         };
-    }, [scene, reducedMotion]);
+    }, [layout, reducedMotion]);
 
     useEffect(() => {
-        if (!scene || !running) return;
+        if (!layout || !running) return;
         let frame = 0;
 
         const loop = (now: number) => {
@@ -215,20 +215,21 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
             pointer.vy *= 0.82;
 
             const sim = simRef.current;
-            if (sim) {
+            const scene = sceneRef.current;
+            if (sim && scene) {
                 sim.tick();
                 for (const node of scene.nodes) {
                     node.vx = clamp(node.vx ?? 0, -MAX_SPEED, MAX_SPEED);
                     node.vy = clamp(node.vy ?? 0, -MAX_SPEED, MAX_SPEED);
                 }
+                renderScene(scene, nodeEls.current, linkEls.current);
             }
-            renderScene(scene, nodeEls.current, linkEls.current);
             frame = requestAnimationFrame(loop);
         };
 
         frame = requestAnimationFrame(loop);
         return () => cancelAnimationFrame(frame);
-    }, [scene, running]);
+    }, [layout, running]);
 
     useImperativeHandle(
         apiRef,
@@ -283,6 +284,7 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
 
     const handlePointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
         const drag = dragRef.current;
+        const scene = sceneRef.current;
         if (!drag || drag.pointerId !== e.pointerId || !scene) return;
         if (!drag.moved && Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 6) return;
 
@@ -304,7 +306,7 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
     const handlePointerUp = (e: ReactPointerEvent<HTMLButtonElement>) => {
         const drag = dragRef.current;
         if (!drag || drag.pointerId !== e.pointerId) return;
-        const node = scene?.byId.get(drag.id);
+        const node = sceneRef.current?.byId.get(drag.id);
         if (node) {
             node.fx = null;
             node.fy = null;
@@ -342,15 +344,15 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
             <div className={styles.grid} aria-hidden="true" />
             <BubbleField running={running} />
 
-            {scene && (
+            {layout && (
                 <>
                     <svg
                         className="pointer-events-none absolute inset-0 h-full w-full"
-                        width={scene.w}
-                        height={scene.h}
+                        width={layout.w}
+                        height={layout.h}
                         aria-hidden="true"
                     >
-                        {scene.links.map((link) => (
+                        {layout.links.map((link) => (
                             <line
                                 key={link.id}
                                 ref={(el) => {
@@ -366,7 +368,7 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
                         ))}
                     </svg>
 
-                    {scene.nodes.map((node) => {
+                    {layout.nodes.map((node) => {
                         const setRef = (el: HTMLDivElement | null) => {
                             if (el) nodeEls.current.set(node.id, el);
                             else nodeEls.current.delete(node.id);
@@ -411,8 +413,8 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
                                 >
                                     {project.image ? (
                                         <>
-                                            <img src={project.image} alt="" aria-hidden="true" draggable={false}
-                                                 className="absolute inset-0 h-full w-full rounded-[inherit] object-cover object-top opacity-95" />
+                                            <Image src={project.image} alt="" aria-hidden="true" draggable={false} fill sizes="240px"
+                                                   className="rounded-[inherit] object-cover object-top opacity-95" />
                                             <span aria-hidden="true"
                                                   className="absolute inset-0 rounded-[inherit] bg-gradient-to-t from-abyss/90 via-abyss/40 to-transparent" />
                                         </>
@@ -489,6 +491,12 @@ function buildScene(projects: Project[], { w, h }: Size): Scene {
     });
 
     return { w, h, nodes, links, byId: new Map(nodes.map((n) => [n.id, n])) };
+}
+
+function cloneScene(scene: Scene): Scene {
+    const nodes = scene.nodes.map((n) => ({ ...n }));
+    const links = scene.links.map((l) => ({ ...l }));
+    return { w: scene.w, h: scene.h, nodes, links, byId: new Map(nodes.map((n) => [n.id, n])) };
 }
 
 function anchorForce(getTime: () => number, size: Size, wander: boolean) {

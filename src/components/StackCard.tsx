@@ -1,5 +1,5 @@
-import cn from "../utils/cn";
-import { techIcons, type TechName } from "../data/techIcons";
+import cn from "@/utils/cn";
+import { techIcons, type TechName } from "@/data/techIcons";
 
 type StackCardProps = {
     title: string;

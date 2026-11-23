@@ -1,5 +1,3 @@
-import cv from "./data/files/CV.pdf";
-
 export const metadata = {
     name: "Benjamín González",
     initials: "BG",
@@ -13,9 +11,8 @@ export const metadata = {
         " construcción de APIs REST (Spring Boot, FastAPI, NestJS) y aplicaciones web (Next.js, React, TypeScript), y las despliego" +
         " con Docker y Nginx. He trabajado en proyectos reales en producción, levantando requerimientos directamente con clientes.",
 
-    photo: "/profile.jpg",
-
-    cvUrl: cv,
+    photo: "/profile.webp",
+    cvUrl: "/CV.pdf",
 
     links: {
         github: "https://github.com/benjag22",

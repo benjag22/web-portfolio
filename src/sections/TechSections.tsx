@@ -1,7 +1,7 @@
-import cn from "../utils/cn"
-import StackCard from "../components/StackCard.tsx";
-import SectionTitle from "../components/SectionTitle.tsx";
-import { stackGroups } from "../data/stack.ts";
+import cn from "@/utils/cn"
+import StackCard from "@/components/StackCard";
+import SectionTitle from "@/components/SectionTitle";
+import { stackGroups } from "@/data/stack";
 
 type TechSectionProps = {
     id: string

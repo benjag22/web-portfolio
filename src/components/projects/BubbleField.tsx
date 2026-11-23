@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import cn from "../../utils/cn";
+import cn from "@/utils/cn";
 
 type BubbleFieldProps = {
     running: boolean;
@@ -75,7 +75,6 @@ export default function BubbleField({ running, className }: BubbleFieldProps) {
                 ctx.fillStyle = `rgba(34, 211, 238, ${alpha * 0.12})`;
                 ctx.fill();
 
-                // Brillo especular.
                 ctx.beginPath();
                 ctx.arc(x - p.r * 0.35, p.y - p.r * 0.35, p.r * 0.22, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.9})`;

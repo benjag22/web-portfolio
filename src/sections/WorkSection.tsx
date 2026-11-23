@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { AnimatePresence } from "motion/react";
-import cn from "../utils/cn";
-import { projects } from "../data/projects";
-import SectionTitle from "../components/SectionTitle.tsx";
-import ProjectBubbles, { type BubbleOrigin, type ProjectBubblesApi } from "../components/projects/ProjectBubbles.tsx";
-import ProjectPreview from "../components/projects/ProjectPreview.tsx";
+import cn from "@/utils/cn";
+import { projects } from "@/data/projects";
+import SectionTitle from "@/components/SectionTitle";
+import ProjectBubbles, { type BubbleOrigin, type ProjectBubblesApi } from "@/components/projects/ProjectBubbles";
+import ProjectPreview from "@/components/projects/ProjectPreview";
 
 type WorkSectionProps = {
     id: string

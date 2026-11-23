@@ -1,7 +1,8 @@
 import { useState } from "react";
-import type { Project } from "../../data/projects";
-import { techIcons } from "../../data/techIcons";
-import cn from "../../utils/cn";
+import Image from "next/image";
+import type { Project } from "@/data/projects";
+import { techIcons } from "@/data/techIcons";
+import cn from "@/utils/cn";
 import styles from "./ProjectBubbles.module.css";
 
 type ProjectVisualProps = {
@@ -11,7 +12,6 @@ type ProjectVisualProps = {
 export default function ProjectVisual({ project }: ProjectVisualProps) {
     const [failed, setFailed] = useState(false);
     const domain = project.url ? new URL(project.url).host : project.name.toLowerCase();
-    const showImage = project.image && !failed;
 
     return (
         <div className="overflow-hidden rounded-xl border border-cyan-400/20 bg-deep shadow-[0_0_40px_rgba(6,182,212,0.15)]">
@@ -25,13 +25,14 @@ export default function ProjectVisual({ project }: ProjectVisualProps) {
             </div>
 
             <div className="relative aspect-[16/10]">
-                {showImage ? (
-                    <img
+                {project.image && !failed ? (
+                    <Image
                         src={project.image}
                         alt={`Captura de ${project.name}`}
-                        loading="lazy"
+                        fill
+                        sizes="(min-width: 768px) 600px, 100vw"
                         onError={() => setFailed(true)}
-                        className="h-full w-full object-cover object-top"
+                        className="object-cover object-top"
                     />
                 ) : (
                     <GeneratedVisual project={project} />

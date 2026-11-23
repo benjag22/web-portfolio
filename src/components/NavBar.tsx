@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { TbMenu2, TbX } from "react-icons/tb";
-import cn from "../utils/cn"
-import useActiveSection from "../hooks/useActiveSection";
+import cn from "@/utils/cn"
+import useActiveSection from "@/hooks/useActiveSection";
 
 type NavLink = {
     href: string;

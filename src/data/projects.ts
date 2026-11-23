@@ -27,7 +27,7 @@ export const projects: Project[] = [
         period: "Sep 2024 – presente",
         status: "En producción",
         url: "https://db.capchical.com",
-        image: "/projects/capchical/.jpg",
+        image: "/projects/capchical.jpg",
         summary:
             "Sistema público, de alcance nacional, para consultar la composición de los alimentos, " +
             "con un panel para que los administradores gestionen el catálogo.",
@@ -50,7 +50,7 @@ export const projects: Project[] = [
         period: "2026 – presente",
         status: "En desarrollo",
         url: "https://compass.giia.udec.cl",
-        image: "/projects/compass/.jpg",
+        image: "/projects/compass.jpg",
         summary:
             "Rediseño de un juego de rol que usan investigadores para analizar capacidades de gestión " +
             "a partir de las acciones de los participantes.",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
         summary:
             "Sistema que centraliza y estandariza el registro de ingreso, permanencia y salida de vehículos, " +
             "con roles de mecánico practicante, revisor y administrador.",
-        image: "/projects/taller-usm/.jpg",
+        image: "/projects/taller-usm.jpg",
         highlights: [
             "Diseñé la base de datos en MySQL e implementé los principales endpoints de la API REST en Spring Boot.",
             "Desarrollé la aplicación web completa en Next.js.",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
         summary:
             "Plataforma web de tests psicológicos (equipo de 3 personas) que pasó de un único test de " +
             "Matrices de Raven a un sistema que admite cualquier tipo de formulario.",
-        image: "/projects/pocopi/.jpg",
+        image: "/projects/pocopi.jpg",
         highlights: [
             "Implementé la nueva API REST en Spring Boot e integré su contrato OpenAPI en el frontend web.",
             "Desarrollé el panel de configuración de formularios y la gestión de cuentas por tipo de usuario.",
