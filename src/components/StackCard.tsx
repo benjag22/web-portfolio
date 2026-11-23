@@ -1,49 +1,35 @@
-import { SiTypescript, SiNextdotjs } from "react-icons/si";
-import { FaReact, FaHtml5, FaCss3Alt } from "react-icons/fa";
-import { RiTailwindCssFill } from "react-icons/ri";
-import { type ReactNode } from "react";
 import cn from "../utils/cn";
+import { techIcons, type TechName } from "../data/techIcons";
 
 type StackCardProps = {
     title: string;
+    items: TechName[];
+    className?: string;
 };
 
-type TechIcon = {
-    icon: ReactNode;
-    name: string;
-};
+export default function StackCard({ title, items, className }: StackCardProps) {
 
-export default function StackCard({ title }: StackCardProps) {
-    const techStack: TechIcon[] = [
-        { icon: <SiTypescript className="text-[#007acc]" />, name: "TypeScript" },
-        { icon: <FaReact className="text-[#6CE6E1]" />, name: "React" },
-        { icon: <FaHtml5 className="text-[#F57900]" />, name: "HTML" },
-        { icon: <FaCss3Alt className="text-[#0035F5]" />, name: "CSS" },
-        { icon: <SiNextdotjs className="text-white" />, name: "Next.js" },
-        { icon: <RiTailwindCssFill className="text-[#53C7E0]" />, name: "Tailwind CSS" },
-    ];
-
-    function renderTech({ icon, name }: TechIcon) {
+    function renderTech(name: TechName) {
+        const { icon: Icon, color } = techIcons[name];
         return (
-            <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-[#0B1741] shadow-md hover:shadow-cyan-500/50 transition-shadow duration-300">
-                <div className="text-5xl">{icon}</div>
-                <span className="mt-2 text-sm text-cyan-100">{name}</span>
+            <div className="flex h-full flex-col items-center justify-center p-4 rounded-lg bg-panel shadow-md hover:shadow-cyan-500/50 transition-shadow duration-300">
+                <Icon aria-hidden="true" className="text-5xl" style={{ color }} />
+                <span className="mt-2 text-center text-sm text-cyan-100">{name}</span>
             </div>
         );
     }
 
     return (
-        <div className="bg-[#020A38] w-full max-w-md m-5 p-6 rounded-xl shadow-lg flex flex-col items-center">
-            <h1 className="text-cyan-400 text-4xl font-semibold italic mb-8 text-center relative inline-block before:absolute before:inset-0 before:blur-md before:bg-cyan-400 before:opacity-30">
+        <div className={cn("bg-navy w-full p-6 rounded-xl shadow-lg flex flex-col items-center", className)}>
+            <h3 className="text-cyan-400 text-3xl font-semibold italic mb-8 text-center relative inline-block before:absolute before:inset-0 before:blur-md before:bg-cyan-400 before:opacity-30">
                 {title}
-            </h1>
+            </h3>
 
-
-            <div className="grid grid-cols-2 gap-4">
-                {techStack.map((tech, idx) => (
-                    <div key={idx}>{renderTech(tech)}</div>
+            <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3">
+                {items.map((name) => (
+                    <li key={name}>{renderTech(name)}</li>
                 ))}
-            </div>
+            </ul>
         </div>
     );
 }

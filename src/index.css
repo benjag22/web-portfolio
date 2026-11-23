@@ -1,9 +1,51 @@
 @import "tailwindcss";
-.font-roboto-condensed {
-    font-family: "Roboto Condensed", sans-serif;
+
+@theme {
+    --font-roboto-condensed: "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
+
+    --color-abyss: #010621;
+    --color-deep: #020936;
+    --color-navy: #020A38;
+    --color-panel: #0B1741;
+    --color-nav: #06263B;
+    --color-film-sky: #7DD3FC;
+    --color-film-indigo: #818CF8;
 }
-#root{
+
+html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    background-color: var(--color-abyss);
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-roboto-condensed);
+    background-color: var(--color-abyss);
+    -webkit-font-smoothing: antialiased;
+}
+
+#root {
     margin: 0;
     box-sizing: border-box;
-    background-color: #020936
+    min-height: 100vh;
+    background:
+            radial-gradient(ellipse 80% 40% at 50% -10%, rgba(34, 211, 238, 0.08), transparent 70%),
+            var(--color-abyss);
+}
+
+::selection {
+    background: rgba(34, 211, 238, 0.35);
+    color: #fff;
+}
+
+:focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 }

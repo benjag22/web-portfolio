@@ -1,43 +1,62 @@
+import type { ReactNode } from "react";
 import cn from "../utils/cn"
 import {FaGithub, FaLinkedin} from "react-icons/fa"
 import { TbFileCv } from "react-icons/tb";
 import {metadata} from "../metadata.ts"
+import SectionTitle from "../components/SectionTitle.tsx";
+import ProfilePhoto from "../components/ProfilePhoto.tsx";
 
 import styles from "./AboutSection.module.css"
 
 type AboutSectionProps = {
     id: string
 }
-export default function AboutSection(props: AboutSectionProps) {
 
-    const goTo = (path: string) => {
-        window.open(path, "_blank", "noopener,noreferrer")
-    }
+type SocialLinkProps = {
+    href: string;
+    label: string;
+    children: ReactNode;
+}
 
+function SocialLink({ href, label, children }: SocialLinkProps) {
     return (
-        <section id= {props.id} className={cn(
-            "font-roboto-condensed",
-            "h-screen",
+        <a
+            href={href}
+            target="_blank"
+            download="CV.pdf"
+            rel="noopener noreferrer"
+            aria-label={label}
+            title={label}
+            className={cn(
+                "group p-3 rounded-full",
+                "text-5xl sm:text-6xl text-white hover:text-cyan-400",
+                "hover:bg-cyan-900/20 transition-all duration-300"
+            )}
+        >
+            <span className="block transition-transform duration-300 group-hover:scale-110">{children}</span>
+        </a>
+    )
+}
+
+export default function AboutSection(props: AboutSectionProps) {
+    return (
+        <section id={props.id} className={cn(
+            "font-roboto-condensed scroll-mt-16",
+            "min-h-[calc(100svh-4rem)]",
+            "flex flex-col"
         )}>
             <div className={cn(
-                "h-full w-full bg-[#010621]",
-                "grid [grid-template-rows:30%_50%_20%] gap-2"
+                "mx-auto w-full max-w-[1200px] flex-1",
+                "flex flex-col gap-10 px-4 py-12 sm:px-8 sm:py-16"
             )}>
-                <div className={cn("flex w-full items-start justify-start px-8 pt-8")}>
-                    <h1 className={cn(
-                        "font-roboto-condensed",
-                        "italic text-5xl text-white p-6",
-                        "border-b-2 border-cyan-600 shadow-md shadow-cyan-800"
-                    )}>
-                        {"< Acerca de Benjamín González />"}
-                    </h1>
-                </div>
+                <SectionTitle as="h1">{"< Acerca de Benjamín González />"}</SectionTitle>
+
                 <div className={cn(
-                    "grid grid-cols-2 gap-x-8 px-8 pb-8"
+                    "grid flex-1 grid-cols-1 gap-8 md:grid-cols-2"
                 )}>
                     <div className={cn(
                         styles.borderContainer,
-                        "group cursor-pointer"
+                        "group"
                     )}>
                         <div className={cn(
                             styles.animatedBorder,
@@ -49,21 +68,22 @@ export default function AboutSection(props: AboutSectionProps) {
                         <div className={cn(
                             styles.contentWithBorder,
                             "text-lg",
-                            "p-8",
+                            "p-6 sm:p-8",
                             "h-full",
                             "flex flex-col justify-center gap-6",
                             "group-hover:shadow-lg group-hover:shadow-cyan-500/20",
                             "transition-all duration-300"
                         )}>
+                            <p className="text-cyan-400 text-2xl italic">{metadata.role}</p>
                             <p className={cn(
                                 "font-roboto-condensed",
-                                "text-white text-center leading-relaxed"
+                                "text-white leading-relaxed"
                             )}>
                                 {metadata.aboutMeParagraph1}
                             </p>
                             <p className={cn(
                                 "font-roboto-condensed",
-                                "text-white text-center leading-relaxed"
+                                "text-white leading-relaxed"
                             )}>
                                 {metadata.aboutMeParagraph2}
                             </p>
@@ -71,61 +91,31 @@ export default function AboutSection(props: AboutSectionProps) {
                     </div>
 
                     <div className={cn(
-                        "flex items-center justify-center",
-                        "bg-gradient-to-br from-[#020A38] to-[#010621]",
+                        "flex items-center justify-center p-10",
+                        "bg-gradient-to-br from-navy to-abyss",
                         "rounded-xl border border-cyan-800/30",
                         "shadow-lg shadow-cyan-900/20"
                     )}>
-                        <div className={cn(
-                            "font-roboto-condensed",
-                            "text-cyan-400 text-2xl ",
-                            "flex flex-col items-center gap-4"
-                        )}>
-                            <span className="text-center">futura foto de perfil</span>
-                        </div>
+                        <ProfilePhoto
+                            src={metadata.photo}
+                            alt={`Foto de ${metadata.name}`}
+                            initials={metadata.initials}
+                        />
                     </div>
                 </div>
+
                 <div className={cn(
-                    "flex flex-row justify-center items-center gap-8"
+                    "flex flex-row justify-center items-center gap-6 sm:gap-8"
                 )}>
-                    <div className={cn(
-                        "group cursor-pointer p-3 rounded-full",
-                        "hover:bg-cyan-900/20 transition-all duration-300"
-                    )}>
-                        <FaGithub
-                            onClick={() => goTo("https://github.com/benjag22")}
-                            className={cn(
-                                "text-6xl text-white hover:text-cyan-400",
-                                "cursor-pointer transition-colors duration-300",
-                                "group-hover:scale-110 transform"
-                            )}
-                        />
-                    </div>
-                    <div className={cn(
-                        "group cursor-pointer p-3 rounded-full",
-                        "hover:bg-cyan-900/20 transition-all duration-300"
-                    )}>
-                        <FaLinkedin
-                            onClick={() => goTo("https://www.linkedin.com/in/benjags/")}
-                            className={cn(
-                                "text-6xl text-white hover:text-cyan-400",
-                                "cursor-pointer transition-colors duration-300",
-                                "group-hover:scale-110 transform"
-                            )}
-                        />
-                    </div>
-                    <div className={cn(
-                        "group cursor-pointer p-3 rounded-full",
-                        "hover:bg-cyan-900/20 transition-all duration-300"
-                    )}>
-                        <TbFileCv
-                            className={cn(
-                                "text-6xl text-white hover:text-cyan-400",
-                                "cursor-pointer transition-colors duration-300",
-                                "group-hover:scale-110 transform"
-                            )}
-                        />
-                    </div>
+                    <SocialLink href={metadata.links.github} label="GitHub">
+                        <FaGithub />
+                    </SocialLink>
+                    <SocialLink href={metadata.links.linkedin} label="LinkedIn">
+                        <FaLinkedin />
+                    </SocialLink>
+                    <SocialLink href={metadata.cvUrl} label="Descargar CV (PDF)">
+                        <TbFileCv />
+                    </SocialLink>
                 </div>
             </div>
         </section>

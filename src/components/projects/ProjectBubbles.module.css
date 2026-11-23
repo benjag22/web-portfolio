@@ -1,0 +1,268 @@
+
+.scene {
+    background:
+            radial-gradient(ellipse 60% 50% at 50% 110%, rgba(34, 211, 238, 0.12), transparent 70%),
+            radial-gradient(ellipse 50% 40% at 15% 0%, rgba(129, 140, 248, 0.08), transparent 70%),
+            linear-gradient(180deg, #020936 0%, #010621 100%);
+}
+
+.stage {
+    composes: scene;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    touch-action: pan-y;
+}
+
+.grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+            linear-gradient(rgba(34, 211, 238, 0.07) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, #000 30%, transparent 100%);
+}
+
+.node {
+    position: absolute;
+    left: 0;
+    top: 0;
+    will-change: transform;
+}
+
+
+@property --film-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+.glass {
+    position: relative;
+    border-radius: 9999px;
+    color: #fff;
+    background:
+            radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.26) 0, rgba(255, 255, 255, 0.05) 14%, transparent 32%),
+            radial-gradient(circle at 72% 82%, rgba(129, 140, 248, 0.2), transparent 46%),
+            radial-gradient(circle at 50% 50%, rgba(2, 10, 56, 0.45) 0, rgba(2, 10, 56, 0.8) 68%, rgba(34, 211, 238, 0.22) 100%);
+    box-shadow:
+            inset 0 0 26px rgba(34, 211, 238, 0.22),
+            inset 0 -12px 30px rgba(129, 140, 248, 0.14),
+            0 0 40px rgba(6, 182, 212, 0.12);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+            from var(--film-angle),
+            #22d3ee,
+            #7dd3fc 18%,
+            #818cf8 34%,
+            rgba(34, 211, 238, 0.25) 52%,
+            #67e8f9 70%,
+            #a5b4fc 86%,
+            #22d3ee
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.6;
+    animation: film 16s linear infinite;
+    pointer-events: none;
+}
+
+.glass::after {
+    content: "";
+    position: absolute;
+    top: 11%;
+    left: 19%;
+    width: 28%;
+    height: 15%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.6), transparent 70%);
+    transform: rotate(-32deg);
+    filter: blur(1px);
+    pointer-events: none;
+}
+
+
+.bubble {
+    composes: glass;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15em;
+    padding: 0 12%;
+    text-align: center;
+    cursor: grab;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    animation: wobble 9s ease-in-out infinite;
+}
+
+.bubble:hover,
+.bubble:focus-visible {
+    transform: scale(1.07);
+    box-shadow:
+            inset 0 0 32px rgba(34, 211, 238, 0.35),
+            inset 0 -12px 30px rgba(129, 140, 248, 0.2),
+            0 0 60px rgba(34, 211, 238, 0.28);
+}
+
+.bubble:hover::before,
+.bubble:focus-visible::before {
+    opacity: 1;
+    animation-duration: 5s;
+}
+
+.bubble:focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 6px;
+}
+
+.bubble.dragging {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+
+.name {
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+}
+
+.meta {
+    font-size: 0.8rem;
+    color: rgba(207, 250, 254, 0.7);
+}
+
+.hint {
+    margin-top: 0.35em;
+    font-size: 0.75rem;
+    color: #67e8f9;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.bubble:hover .hint,
+.bubble:focus-visible .hint {
+    opacity: 1;
+    transform: none;
+}
+
+
+.sat {
+    composes: glass;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #cffafe;
+    opacity: 0.55;
+    transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.sat::before {
+    padding: 1px;
+    opacity: 0.45;
+}
+
+.sat::after {
+    top: 14%;
+    left: 22%;
+}
+
+.satActive {
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: inset 0 0 10px rgba(34, 211, 238, 0.35), 0 0 16px rgba(34, 211, 238, 0.45);
+}
+
+.satDim {
+    opacity: 0.22;
+}
+
+
+.link {
+    stroke: rgba(103, 232, 249, 0.22);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    animation: flow 1.8s linear infinite;
+    transition: stroke 0.3s ease;
+}
+
+.linkActive {
+    stroke: rgba(103, 232, 249, 0.75);
+}
+
+.linkDim {
+    stroke: rgba(103, 232, 249, 0.08);
+}
+
+
+@keyframes film {
+    to {
+        --film-angle: 360deg;
+    }
+}
+
+@keyframes flow {
+    to {
+        stroke-dashoffset: -16;
+    }
+}
+
+@keyframes wobble {
+    0%, 100% {
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    }
+    33% {
+        border-radius: 52% 48% 50% 50% / 48% 52% 49% 51%;
+    }
+    66% {
+        border-radius: 49% 51% 48% 52% / 51% 49% 52% 48%;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glass::before,
+    .bubble,
+    .link,
+    .floating {
+        animation: none;
+    }
+
+    .bubble,
+    .sat,
+    .hint {
+        transition: none;
+    }
+}

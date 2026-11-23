@@ -1,69 +1,60 @@
-# React + TypeScript + Vite
+# web-portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portafolio de Benjamín González, desarrollador full stack.
+React 19 + TypeScript + Vite + Tailwind CSS v4, con una sección de proyectos hecha de burbujas con física.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev       # desarrollo en http://localhost:5173
+npm run build     # tsc + build de producción en dist/
+npm run preview   # sirve dist/
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estructura
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+  data/
+    projects.ts        # proyectos del CV (edita aquí)
+    stack.ts           # grupos de la sección Tecnologías
+    techIcons.ts       # nombre de tecnología → ícono + color
+  components/
+    NavBar.tsx         # sección activa + menú móvil
+    SectionTitle.tsx   # título "< Sección />"
+    StackCard.tsx
+    ProfilePhoto.tsx
+    projects/
+      ProjectBubbles.tsx         # escena con d3-force (burbujas, satélites, arrastre)
+      ProjectBubbles.module.css  # vidrio iridiscente, animaciones
+      ProjectPreview.tsx         # diálogo que se abre desde la burbuja
+      ProjectVisual.tsx          # ventana de navegador con captura o vista generada
+      BubbleField.tsx            # micro-burbujas en canvas
+  hooks/
+    useActiveSection.ts
+    usePrefersReducedMotion.ts
+  sections/
+    AboutSection.tsx  TechSections.tsx  WorkSection.tsx  ContactSection.tsx
+  metadata.ts          # textos de "Sobre mí", enlaces, foto y CV
+```
+
+## Archivos que faltan agregar
+
+| Archivo | Para qué |
+| --- | --- |
+| `public/profile.jpg` | Foto de perfil (cuadrada, mínimo 640×640). Mientras no exista se muestran las iniciales. |
+| `public/cv-benjamin-gonzalez.pdf` | CV exportado desde Canva. Lo usan el ícono de CV y el botón de Contacto. |
+| `public/projects/<id>.webp` | Capturas opcionales de cada proyecto (16:10). Luego agrega `image: "/projects/<id>.webp"` en `src/data/projects.ts`. Sin captura se dibuja una vista generada con el stack. |
+
+## Cómo funciona la sección de proyectos
+
+- **d3-force** (solo ese módulo, no todo d3) calcula la física: colisiones, cada proyecto vuelve a su zona,
+  las tecnologías orbitan su proyecto, el cursor deja una estela y las burbujas se pueden arrastrar y lanzar.
+  React dibuja los nodos una vez; las posiciones se escriben directo en el DOM en cada cuadro, sin re-render.
+- **Motion** (`motion/react`) anima la vista previa: un `clip-path: circle()` que crece desde la burbuja tocada,
+  el cambio entre proyectos (círculo que nace desde la burbuja del navegador inferior) y el indicador de la navbar.
+- La simulación se pausa fuera de pantalla y con la vista previa abierta.
+- Con `prefers-reduced-motion` las burbujas quedan quietas y las transiciones se reducen a fundidos.
+- Teclado: Tab recorre las burbujas, Enter abre, ← → cambian de proyecto, Esc cierra y devuelve el foco.
