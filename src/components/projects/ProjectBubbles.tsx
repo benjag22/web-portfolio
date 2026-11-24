@@ -413,10 +413,10 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
                                 >
                                     {project.image ? (
                                         <>
-                                            <Image src={project.image} alt="" aria-hidden="true" draggable={false} fill sizes="240px"
+                                            <Image src={project.thumb ?? project.image} alt="" aria-hidden="true" draggable={false} fill sizes="240px"
                                                    className="rounded-[inherit] object-cover object-top opacity-95" />
                                             <span aria-hidden="true"
-                                                  className="absolute inset-0 rounded-[inherit] bg-gradient-to-t from-abyss/90 via-abyss/40 to-transparent" />
+                                                  className="absolute inset-0 rounded-[inherit] bg-linear-to-t from-abyss/90 via-abyss/40 to-transparent" />
                                         </>
                                     ):(
                                         <span className={styles.name} style={{ fontSize: clamp(node.r * 0.24, 15, 28) }}>

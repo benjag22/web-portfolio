@@ -1,4 +1,3 @@
-
 .scene {
     background:
             radial-gradient(ellipse 60% 50% at 50% 110%, rgba(34, 211, 238, 0.12), transparent 70%),
@@ -33,12 +32,6 @@
 }
 
 
-@property --film-angle {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
-}
-
 .glass {
     position: relative;
     border-radius: 9999px;
@@ -62,7 +55,6 @@
     border-radius: inherit;
     padding: 1.5px;
     background: conic-gradient(
-            from var(--film-angle),
             #22d3ee,
             #7dd3fc 18%,
             #818cf8 34%,
@@ -110,7 +102,6 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
-    animation: wobble 9s ease-in-out infinite;
 }
 
 .bubble:hover,
@@ -217,25 +208,13 @@
 
 @keyframes film {
     to {
-        --film-angle: 360deg;
+        transform: rotate(360deg);
     }
 }
 
 @keyframes flow {
     to {
         stroke-dashoffset: -16;
-    }
-}
-
-@keyframes wobble {
-    0%, 100% {
-        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-    }
-    33% {
-        border-radius: 52% 48% 50% 50% / 48% 52% 49% 51%;
-    }
-    66% {
-        border-radius: 49% 51% 48% 52% / 51% 49% 52% 48%;
     }
 }
 
@@ -252,9 +231,19 @@
     animation: float 6s ease-in-out infinite;
 }
 
+@media (hover: none) {
+    .glass {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
+    .link {
+        animation: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .glass::before,
-    .bubble,
     .link,
     .floating {
         animation: none;
