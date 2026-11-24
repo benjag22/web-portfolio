@@ -229,6 +229,17 @@
     animation: float 6s ease-in-out infinite;
 }
 
+.stage .glass::before {
+    animation: none;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .stage .bubble:hover::before,
+    .stage .bubble:focus-visible::before {
+        animation: film 5s linear infinite;
+    }
+}
+
 @media (hover: none) {
     .glass {
         -webkit-backdrop-filter: none;

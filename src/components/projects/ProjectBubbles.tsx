@@ -21,6 +21,7 @@ import type { Project } from "@/data/projects";
 import Image from "next/image";
 import { techIcons, type TechName } from "@/data/techIcons";
 import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
+import useIsTouchScreen from "@/hooks/useIsTouchScreen";
 import cn from "@/utils/cn";
 import BubbleField from "./BubbleField";
 import styles from "./ProjectBubbles.module.css";
@@ -86,6 +87,7 @@ const MAX_SPEED = 24;
 
 export default function ProjectBubbles({ projects, onOpen, apiRef, paused = false, className }: ProjectBubblesProps) {
     const reducedMotion = usePrefersReducedMotion();
+    const touch = useIsTouchScreen();
 
     const stageRef = useRef<HTMLDivElement>(null);
     const nodeEls = useRef(new Map<string, HTMLDivElement>());
@@ -342,7 +344,7 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
             )}
         >
             <div className={styles.grid} aria-hidden="true" />
-            <BubbleField running={running} />
+            <BubbleField running={running && !touch} />
 
             {layout && (
                 <>
