@@ -31,7 +31,6 @@
     will-change: transform;
 }
 
-
 .glass {
     position: relative;
     border-radius: 9999px;
@@ -66,7 +65,6 @@
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
     opacity: 0.6;
-    animation: film 16s linear infinite;
     pointer-events: none;
 }
 
@@ -83,7 +81,6 @@
     filter: blur(1px);
     pointer-events: none;
 }
-
 
 .bubble {
     composes: glass;
@@ -114,7 +111,6 @@
 .bubble:hover::before,
 .bubble:focus-visible::before {
     opacity: 1;
-    animation-duration: 5s;
 }
 
 .bubble:focus-visible {
@@ -154,65 +150,9 @@
     transform: none;
 }
 
-
-.sat {
-    composes: glass;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    color: #cffafe;
-    opacity: 0.55;
-    transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
-}
-
-.sat::before {
-    padding: 1px;
-    opacity: 0.45;
-}
-
-.sat::after {
-    top: 14%;
-    left: 22%;
-}
-
-.satActive {
-    opacity: 1;
-    transform: scale(1.15);
-    box-shadow: inset 0 0 10px rgba(34, 211, 238, 0.35), 0 0 16px rgba(34, 211, 238, 0.45);
-}
-
-.satDim {
-    opacity: 0.22;
-}
-
-
-.link {
-    stroke: rgba(103, 232, 249, 0.22);
-    stroke-width: 1;
-    stroke-dasharray: 3 5;
-    animation: flow 1.8s linear infinite;
-    transition: stroke 0.3s ease;
-}
-
-.linkActive {
-    stroke: rgba(103, 232, 249, 0.75);
-}
-
-.linkDim {
-    stroke: rgba(103, 232, 249, 0.08);
-}
-
-
 @keyframes film {
     to {
         transform: rotate(360deg);
-    }
-}
-
-@keyframes flow {
-    to {
-        stroke-dashoffset: -16;
     }
 }
 
@@ -229,37 +169,25 @@
     animation: float 6s ease-in-out infinite;
 }
 
-.stage .glass::before {
-    animation: none;
-}
-
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .stage .bubble:hover::before,
-    .stage .bubble:focus-visible::before {
+    .bubble:hover::before,
+    .bubble:focus-visible::before {
         animation: film 5s linear infinite;
     }
 }
 
 @media (hover: none) {
-    .glass {
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
-    }
-
-    .link {
+    .floating {
         animation: none;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .glass::before,
-    .link,
     .floating {
         animation: none;
     }
 
     .bubble,
-    .sat,
     .hint {
         transition: none;
     }

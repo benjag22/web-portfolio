@@ -129,7 +129,7 @@ export default function ProjectPreview({ projects, index, origin, onNavigate, on
             className="fixed inset-0 z-50 flex items-center justify-center p-3 font-roboto-condensed sm:p-6"
         >
             <div
-                className="absolute inset-0 bg-abyss/85 backdrop-blur-md"
+                className="absolute inset-0 bg-abyss/92"
                 onClick={onClose}
                 aria-hidden="true"
             />

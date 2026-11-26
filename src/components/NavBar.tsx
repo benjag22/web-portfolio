@@ -20,7 +20,7 @@ export default function NavBar({ links }: NavBarProps) {
     return (
         <nav className={cn(
             "font-roboto-condensed sticky top-0 z-40",
-            "bg-nav/95 border-b-2 border-cyan-600 backdrop-blur",
+            "bg-nav border-b-2 border-cyan-600",
             "h-16"
         )}>
             <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between px-4 sm:px-8">
@@ -76,7 +76,7 @@ export default function NavBar({ links }: NavBarProps) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -8 }}
                         transition={{ duration: 0.18 }}
-                        className="absolute inset-x-0 top-full border-b-2 border-cyan-600 bg-nav/95 px-4 py-2 text-lg text-cyan-100 backdrop-blur md:hidden"
+                        className="absolute inset-x-0 top-full border-b-2 border-cyan-600 bg-nav px-4 py-2 text-lg text-cyan-100 md:hidden"
                     >
                         {links.map((link) => (
                             <li key={link.href}>

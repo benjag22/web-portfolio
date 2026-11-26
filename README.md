@@ -30,7 +30,8 @@ src/
     NavBar.tsx  SectionTitle.tsx  StackCard.tsx  ProfilePhoto.tsx
     projects/
       ProjectBubbles.tsx  ProjectBubbles.module.css
-      ProjectPreview.tsx  ProjectVisual.tsx  BubbleField.tsx
+      ProjectPreview.tsx  ProjectVisual.tsx
+      physics.ts  sceneCanvas.ts
   hooks/
     useActiveSection.ts  usePrefersReducedMotion.ts
   sections/

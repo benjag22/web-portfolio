@@ -92,7 +92,6 @@
     border-radius: 12px;
     position: relative;
     z-index: 1;
-    backdrop-filter: blur(10px);
 }
 
 .borderContainer:hover .contentWithBorder {
@@ -121,6 +120,17 @@
             0 0 15px #06b6d4,
             0 0 25px rgba(34, 211, 238, 0.3);
     animation: smoothBorderJourney 6s infinite linear;
+    animation-play-state: paused;
+}
+
+.borderContainer:hover .borderTrailSmooth {
+    animation-play-state: running;
+}
+
+@media (hover: none) {
+    .animatedBorder {
+        display: none;
+    }
 }
 
 @keyframes smoothBorderJourney {

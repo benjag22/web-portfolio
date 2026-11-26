@@ -58,7 +58,7 @@ export default function ContactSection({id}: ContactSectionProps) {
 
             <footer className="mx-auto mt-20 max-w-[1200px] px-4 text-sm text-cyan-100/50 sm:px-8">
                 <p className="border-t border-cyan-400/15 pt-6">
-                    © {new Date().getFullYear()} {metadata.name}. Hecho con React, Tailwind CSS, d3-force y Motion.
+                    © {new Date().getFullYear()} {metadata.name}. Hecho con Next.js, Tailwind CSS y Motion.
                 </p>
             </footer>
         </section>
