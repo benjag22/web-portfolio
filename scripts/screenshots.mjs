@@ -9,7 +9,7 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 for (const project of projects) {
     if (!project.url) continue;
     await page.goto(project.url, { waitUntil: "networkidle" });
-    await page.screenshot({ path: `public/projects/${project.id}.jpg`, type: "jpeg", fullPage: true });
+    await page.screenshot({ path: `public/projects/${project.id}.jpg`, type: "jpeg", quality: 82 });
 }
 
 await mkdir("public/projects/thumbs", { recursive: true });

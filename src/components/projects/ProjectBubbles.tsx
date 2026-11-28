@@ -13,7 +13,7 @@ import Image from "next/image";
 import type { Project } from "@/data/projects";
 import { techIcons, type TechName } from "@/data/techIcons";
 import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
-import useIsTouchScreen from "@/hooks/useIsTouchScreen";
+import useLowPowerDevice from "@/hooks/useLowPowerDevice";
 import cn from "@/utils/cn";
 import { clamp, createWorld, hitTech, settle, step, STEP_MS, type World } from "./physics";
 import {
@@ -71,7 +71,7 @@ const LOW: Quality = { level: "low", dpr: 1, frameMs: 1000 / 30, particleArea: 4
 
 export default function ProjectBubbles({ projects, onOpen, apiRef, paused = false, className }: ProjectBubblesProps) {
     const reducedMotion = usePrefersReducedMotion();
-    const touch = useIsTouchScreen();
+    const lowPower = useLowPowerDevice();
 
     const stageRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -169,21 +169,14 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
     }, [reducedMotion]);
 
     useEffect(() => {
-        const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
-        const weak =
-            touch ||
-            (nav.hardwareConcurrency ?? 8) <= 4 ||
-            (nav.deviceMemory ?? 8) <= 4 ||
-            nav.connection?.saveData === true ||
-            isSoftwareRendering();
-        const next = weak ? LOW : HIGH;
+        const next = lowPower ? LOW : HIGH;
         if (qualityRef.current.level === next.level) return;
         qualityRef.current = next;
         fitCanvas();
         rebuildSprites();
         resetParticles();
         requestStaticPaint();
-    }, [touch, fitCanvas, rebuildSprites, resetParticles, requestStaticPaint]);
+    }, [lowPower, fitCanvas, rebuildSprites, resetParticles, requestStaticPaint]);
 
     useEffect(() => {
         const stage = stageRef.current;
@@ -513,19 +506,6 @@ export default function ProjectBubbles({ projects, onOpen, apiRef, paused = fals
             })}
         </div>
     );
-}
-
-function isSoftwareRendering(): boolean {
-    try {
-        const gl = document.createElement("canvas").getContext("webgl");
-        if (!gl) return true;
-        const info = gl.getExtension("WEBGL_debug_renderer_info");
-        const renderer = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
-        gl.getExtension("WEBGL_lose_context")?.loseContext();
-        return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer);
-    } catch {
-        return false;
-    }
 }
 
 function originOf(el: HTMLElement | null | undefined): BubbleOrigin | null {

@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { AnimatePresence } from "motion/react";
 import cn from "@/utils/cn";
 import { projects } from "@/data/projects";
 import SectionTitle from "@/components/SectionTitle";
@@ -18,17 +17,19 @@ type PreviewState = {
 export default function WorkSection(props: WorkSectionProps) {
     const bubblesApi = useRef<ProjectBubblesApi>(null);
     const [preview, setPreview] = useState<PreviewState | null>(null);
-    const [exitOrigin, setExitOrigin] = useState<BubbleOrigin | null>(null);
 
     const open = (index: number, origin: BubbleOrigin) => {
-        setExitOrigin(origin);
         setPreview({ index, origin });
     };
 
-    const close = () => {
+    const returnOrigin = () => {
+        if (!preview) return null;
+        return bubblesApi.current?.getOrigin(projects[preview.index].id) ?? null;
+    };
+
+    const closed = () => {
         if (!preview) return;
         const id = projects[preview.index].id;
-        setExitOrigin(bubblesApi.current?.getOrigin(id) ?? preview.origin);
         setPreview(null);
         bubblesApi.current?.focus(id);
     };
@@ -53,18 +54,16 @@ export default function WorkSection(props: WorkSectionProps) {
                 />
             </div>
 
-            <AnimatePresence custom={exitOrigin}>
-                {preview && (
-                    <ProjectPreview
-                        key="project-preview"
-                        projects={projects}
-                        index={preview.index}
-                        origin={preview.origin}
-                        onNavigate={(index) => setPreview((current) => (current ? { ...current, index } : current))}
-                        onClose={close}
-                    />
-                )}
-            </AnimatePresence>
+            {preview && (
+                <ProjectPreview
+                    projects={projects}
+                    index={preview.index}
+                    origin={preview.origin}
+                    getReturnOrigin={returnOrigin}
+                    onNavigate={(index) => setPreview((current) => (current ? { ...current, index } : current))}
+                    onClosed={closed}
+                />
+            )}
         </section>
     )
 }
